@@ -1,17 +1,20 @@
 package com.orakcool.telegramTestBot;
 
+import com.orakcool.telegramTestBot.util.MenuItems;
 import lombok.SneakyThrows;
-import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
-public class Bot extends TelegramLongPollingBot {
+import static com.orakcool.telegramTestBot.util.NonCommand.NonCommandWork;
+
+public class Bot extends TelegramLongPollingCommandBot {
     private static Bot botInstance;
 
     private Bot() {
+        registerAll(MenuItems.getCommands());
     }
 
     @SneakyThrows
@@ -36,24 +39,11 @@ public class Bot extends TelegramLongPollingBot {
 
     @Override
     @SneakyThrows
-    public void onUpdateReceived(Update update) {
-
+    public void processNonCommandUpdate(Update update) {
         if (update.hasMessage()) {
             Message message = update.getMessage();
-            Long chatId = message.getChatId();
-            if (message.hasText()) {
-                sendMessageExecute(chatId, "echo: " + update.getMessage().getText());
-            } else {
-                sendMessageExecute(chatId, "silence...");
-            }
+            execute(NonCommandWork(message));
         }
     }
 
-    @SneakyThrows
-    private void sendMessageExecute(Long chatId, String message){
-        execute(SendMessage.builder()
-                .chatId(chatId)
-                .text(message)
-                .build());
-    }
 }

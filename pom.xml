@@ -15,6 +15,7 @@
     <java.version>17</java.version>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
+    <telegram.version>6.3.0</telegram.version>
   </properties>
 
   <dependencies>
@@ -36,7 +37,12 @@
     <dependency>
       <groupId>org.telegram</groupId>
       <artifactId>telegrambots</artifactId>
-      <version>6.3.0</version>
+      <version>${telegram.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.telegram</groupId>
+      <artifactId>telegrambotsextensions</artifactId>
+      <version>${telegram.version}</version>
     </dependency>
     <!-- Telegram api -->
 
